@@ -6,7 +6,7 @@ using namespace std;
 int clickedNd=0;
 GLfloat qnd,rnd,eatNd[2]={2,2},eat2Nd[2]={10,10},eat3Nd[2]={-10,10},eat4Nd[2]={25,-30},eat5Nd[2]={-20,-30};
 GLfloat eat6Nd[2]={-35,15},eatiNd[2],speedNd=0.2;
-GLint fontNd=0,eatenNd=0;
+GLint fontNd=0,eatenNd=0,highscoreNd=0;
 char kNd;
 
 int gameoverNd=0,countNd,scoreNd;
@@ -72,6 +72,26 @@ void display(void)
     drawBitmapText("A : LEFT",11,-4,0);
     drawBitmapText("D : RIGHT",11,-8,0);
     fontNd=0;
+    //==================quit button====================
+    glColor3f(0.3, .4, .5);
+    #define PI 3.1415926535898
+    GLint circle_points = 100,i;
+    GLfloat angle;
+    glBegin(GL_POLYGON);
+    for (i = 0; i < circle_points; i++) {
+        angle = 2*PI*i/circle_points;
+        glVertex2f(45.5+2*cos(angle),45.5+2*sin(angle));
+    }
+    glEnd();
+    
+    //glFlush();
+    glFinish();  
+    glColor3f(1,1,1);
+    glLineWidth(1);
+    glBegin(GL_LINES);
+       glVertex2f(44.5,44.5);glVertex2f(46.5,46.5);
+       glVertex2f(44.5,46.5);glVertex2f(46.5,44.5);
+    glEnd();  
    glutSwapBuffers();
    }
    //===========Game Display function==============================
@@ -130,11 +150,21 @@ void display(void)
     glColor3f(0,1,0);
     fontNd=1;
     drawBitmapText(" Score :",-7,40,0);
+    drawBitmapText(" Developer : Narendra Dodwaria ",0,-48,0);
     int sNd1,sNd2,sNd3,sNd4;
     sNd1 = scoreNd/1000;sNd2 =(scoreNd/100)%10;sNd3=(scoreNd%100)/10;sNd4=scoreNd%10;
     char aNd[5]={sNd1+48,sNd2+48,sNd3+48,sNd4+48};
     glColor3f(0,1,0);
     drawBitmapText(aNd,5,40,0);
+    drawBitmapText(" Hign Score :",18,46,0);
+    int sNd11,sNd12,sNd13,sNd14;
+    //cout<<"highscoreNd : "<<highscoreNd<<endl;
+    sNd11 = highscoreNd/1000;sNd12 =(highscoreNd/100)%10;sNd13=(highscoreNd%100)/10;sNd14=highscoreNd%10;
+    //cout<<"sNd13 : "<<sNd13<<" sNd14 : "<<sNd14<<endl;
+    char aNd1[5]={sNd11+48,sNd12+48,sNd13+48,sNd14+48};
+    glColor3f(0,1,0);
+    drawBitmapText(aNd1,37,46,0);    
+
     if(gameoverNd==1) 
     {  fontNd=0;
        glColor3f(0.5,0.5,0.5);
@@ -144,6 +174,22 @@ void display(void)
        drawBitmapText("Press 'r' To Restart The Game ",-25,-5,0);
        glutIdleFunc(NULL);        
     }
+    glColor3f(0.3, .4, .5);
+    #define PI 3.1415926535898
+    GLint circle_points = 100,i;
+    GLfloat angle;
+    glBegin(GL_POLYGON);
+    for (i = 0; i < circle_points; i++) {
+        angle = 2*PI*i/circle_points;
+        glVertex2f(-41.5+2*cos(angle),46.5+2*sin(angle));
+    }
+    glEnd();
+    glFinish(); 
+    glColor3f(1,1,1); 
+    fontNd=1;
+    drawBitmapText("<-",-42.7,45.8,0);
+    drawBitmapText("<< BACK",-35.7,45.8,0);
+    fontNd=0;
     glutSwapBuffers();
   
     //========================================================   
@@ -190,9 +236,13 @@ void transDisplay(void)
 
       }
       
-   }   
+   } 
+   //===============SCORE INCREASE==============================  
   // cout<<"1+qnd , -1+rnd : "<<1+qnd<<" , "<<-1+rnd<<"\n";  
-   if((abs(eatNd[0]-(1+qnd))<=1)&&(abs(eatNd[1]-(-1+rnd))<=1)) {eatenNd=1;scoreNd++;}//cout<<"eatenNd : "<<eatenNd<<"\n";}
+   if((abs(eatNd[0]-(1+qnd))<=1)&&(abs(eatNd[1]-(-1+rnd))<=1))
+   { eatenNd=1;scoreNd +=10;
+     if(highscoreNd<=scoreNd) highscoreNd=scoreNd;
+   }//cout<<"eatenNd : "<<eatenNd<<"\n";}
    else eatenNd=0;
    if(eatenNd==1)
    {  int sign1Nd,sign2Nd,sign3Nd,sign4Nd;
@@ -223,7 +273,8 @@ void transDisplay(void)
    
 }
 void restart(void)
-{      if(clickedNd==1){
+{     if(clickedNd==1){
+	   //cout<<"hign score : "<<highscoreNd<<" "<<"score : "<<scoreNd<<"\n";
        qnd=0;rnd=0;scoreNd=0;gameoverNd=0;speedNd=0.2;
        glutPostRedisplay();  
    }
@@ -260,12 +311,21 @@ void mouse(int button, int state, int x, int y)
 {  //cout<<"x,y : "<<x<<" "<<y<<"\n";
    switch (button) {
        case GLUT_LEFT_BUTTON:
-                  if((x<391&&x>211)&&(y<451&&y>395))
+                  if((x<391&&x>211)&&(y<481&&y>421))
                   {
                    clickedNd=1; 
                    //cout<<"x,y : "<<x<<" "<<y<<"\n"; 
                    glutIdleFunc(display);             	
                   }
+                  if((x<=584&&x>=563)&&(y<=38&&y>=17))
+                  {
+                   exit(0);        	
+                  }
+                  if((x<=61&&x>=41)&&(y<=31&&y>=9))
+                  {
+                   clickedNd=0; 
+                   glutIdleFunc(display);      	
+                  }                  
                   break;
        default:
               break;
