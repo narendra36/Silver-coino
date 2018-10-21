@@ -1,7 +1,7 @@
 # Silver-coino
 
-A 2D Graphics Game which is developed in **OpenGL** and **C++**. 
-Player will collect white silver coin and red coins act as obstackles and Green coin will speedup coin Collector vhicle. If there is collision between wall and vhicle that's it Game Over. ;)
+A 2D Graphics Game developed in **OpenGL** and **C++**. 
+Player need to collect White silver coins and Red coins act as obstacles and Green coins will speedup coin Collector vehicle. If there is collision between wall and vehicle that's it Game Over. ;)
 
 **For Live Demo :**
 
